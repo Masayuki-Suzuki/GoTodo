@@ -1,0 +1,35 @@
+version: '3'
+services:
+    golang-local-env:
+        container_name: app
+        build:
+            context: .
+            dockerfile: ./build/Dockerfile
+        volumes:
+            -   ./app:/go/src/app
+        tty: true
+        env_file:
+            -   .env
+        networks:
+            -   golang-local-env-network
+        depends_on:
+            -   db
+
+    db:
+        image: mariadb:10.9.3
+        container_name: mariadb
+        env_file:
+            -   .env
+        ports:
+            -   "3306:3306"
+        volumes:
+            -   ./db:/var/lib/mysql
+        networks:
+            - golang-local-env-network
+        tty: true
+volumes:
+    mariadb:
+
+networks:
+    golang-local-env-network:
+        external: true
