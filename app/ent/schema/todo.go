@@ -1,0 +1,28 @@
+package schema
+
+import (
+  "entgo.io/ent"
+  "entgo.io/ent/schema/field"
+)
+
+// Todo holds the schema definition for the Todo entity.
+type Todo struct {
+  ent.Schema
+}
+
+// Fields of the Todo.
+func (Todo) Fields() []ent.Field {
+  return []ent.Field{
+    field.String("title").NotEmpty(),
+    field.String("description"),
+    field.String("status").NotEmpty(),
+    field.String("due_date"),
+    field.String("completed_at"),
+    field.String("created_at"),
+  }
+}
+
+// Edges of the Todo.
+func (Todo) Edges() []ent.Edge {
+  return nil
+}
