@@ -17,6 +17,7 @@ require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/hashicorp/hcl/v2 v2.13.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
+	github.com/joho/godotenv v1.4.0 // indirect
 	github.com/klauspost/compress v1.15.12 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect

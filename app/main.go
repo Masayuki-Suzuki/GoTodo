@@ -21,7 +21,10 @@ func main() {
   app := fiber.New(fiber.Config{
     Views: engine,
   })
-  app.Use(cors.New())
+
+  app.Use(cors.New(cors.Config{
+    AllowCredentials: true,
+  }))
 
   routes.Setup(app)
   log.Fatal(app.Listen(":3000"))

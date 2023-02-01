@@ -1,7 +1,8 @@
 package routes
 
 import (
-  "app/contorollers"
+  "app/contorollers/user"
+  "app/contorollers/utils"
   "github.com/gofiber/fiber/v2"
 )
 
@@ -12,14 +13,17 @@ func Setup(app *fiber.App) {
   //---------------------------
   // Admin End Point
 
+  // Get
+  //admin.Get("me")
+
   // Post
-  admin.Post("login", contorollers.Login)
-  admin.Post("register", contorollers.Register)
-  admin.Post("email-existence", contorollers.ValidateEmailExistence)
+  admin.Post("login", user.Login)
+  admin.Post("register", user.Register)
+  admin.Post("email-existence", utils.ValidateEmailExistence)
 
   // Delete
-  admin.Delete("user-delete", contorollers.DeleteUser)
-  admin.Delete("cleanup-all-user", contorollers.CleanUpUserDatabase)
+  admin.Delete("user-delete", user.DeleteUser)
+  admin.Delete("cleanup-all-user", user.CleanUpUserDatabase)
 
   // Get
   // Index page
