@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import { Box, Button, Spinner } from '@chakra-ui/react'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link as ReachLink } from 'react-router-dom'
+import { Box, Button, Link, Spinner, Text } from '@chakra-ui/react'
 import { useFormik } from 'formik'
 import { CardTitle } from '../atoms/CardTitle'
 import CommonInputField from '../molecules/CommonInputField'
 import ConfirmField from '../molecules/ConfirmField'
 import { signUpSchema } from '../../libs/validationSchema'
+import { signUp } from '../../reducks/users/operations'
+import { getFetchStatus } from '../../reducks/fetchStatus/selectors'
 
 type InitialValues = {
     emailAddress: string
@@ -16,7 +19,8 @@ type InitialValues = {
 }
 
 const SignUpCard = () => {
-    const [loading, setLoading] = useState<boolean>(false)
+    const isLoading = useSelector(getFetchStatus)
+    const dispatch = useDispatch()
 
     const { errors, handleChange, handleSubmit, touched, values } = useFormik<InitialValues>({
         initialValues: {
@@ -29,10 +33,7 @@ const SignUpCard = () => {
         validationSchema: signUpSchema,
         async onSubmit(values) {
             try {
-                setLoading(true)
-                const res = await axios.post('http://localhost:4000/api/admin/register', values)
-                console.log(res)
-                setLoading(false)
+                await signUp(values)(dispatch)
             } catch (e) {
                 console.error(e)
             }
@@ -100,7 +101,7 @@ const SignUpCard = () => {
                     isRequired
                 />
                 <Box mt={6} textAlign="center">
-                    {loading ? (
+                    {isLoading ? (
                         <Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="xl" />
                     ) : (
                         <Button type="submit" w={120} bg="#19448e" color="white" fontWeight={700} boxShadow="base">
@@ -109,6 +110,12 @@ const SignUpCard = () => {
                     )}
                 </Box>
             </form>
+            <Text fontSize={14} textAlign={'center'} textColor="gray.600" mt={4}>
+                {`Do you already have an account? `}
+                <Link as={ReachLink} to="/login" textDecoration="underline">
+                    Login here.
+                </Link>
+            </Text>
         </Box>
     )
 }

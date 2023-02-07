@@ -13,6 +13,7 @@ export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
+        getUserData: (state: User) => state,
         signInAction: (state: User, action: PayloadAction<User>) => {
             const updatedData = { ...state, ...action.payload }
             return updatedData
@@ -20,5 +21,5 @@ export const userSlice = createSlice({
     }
 })
 
-export const { signInAction } = userSlice.actions
+export const { signInAction, getUserData } = userSlice.actions
 export const user = userSlice.reducer

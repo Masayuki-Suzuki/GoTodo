@@ -13,3 +13,19 @@ export type SignUpField = {
     password: string
     confirmPass: string
 }
+
+export type LogInField = {
+    emailAddress: string
+    password: string
+}
+
+export type ResponseUserData = {
+    user: {
+        id: number
+        first_name: string
+        last_name: string
+        email: string
+        full_name: string
+        token: string
+    }
+}

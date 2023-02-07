@@ -3,7 +3,6 @@ package user
 import (
   "app/contorollers/utils"
   "app/database"
-  "app/types"
   "github.com/gofiber/fiber/v2"
   "golang.org/x/crypto/bcrypt"
 )
@@ -25,7 +24,7 @@ func Register(ctx *fiber.Ctx) error {
     SetPassword(string(pwd)).
     Save(ctx.Context())
 
-  token, err := utils.GetToken(result.ID)
+  token, err := utils.GetToken(result.ID, result.Email)
   if err != nil {
     ctx.Status(fiber.StatusBadRequest)
     return ctx.JSON(fiber.Map{
@@ -36,18 +35,9 @@ func Register(ctx *fiber.Ctx) error {
     })
   }
 
-  var userData types.UserDataStruct
-
-  userData = types.UserDataStruct{
-    Id:           result.ID,
-    FirstName:    result.FirstName,
-    LastName:     result.LastName,
-    FullName:     result.FirstName + " " + result.LastName,
-    EmailAddress: result.Email,
-    Token:        token,
-  }
+  userData := utils.GenerateUserStruct(result, token)
 
   return ctx.Status(200).JSON(fiber.Map{
-    "data": userData,
+    "user": userData,
   })
 }

@@ -5,7 +5,6 @@ import (
   "app/database"
   "app/ent"
   "app/ent/user"
-  "app/types"
   "github.com/gofiber/fiber/v2"
   "golang.org/x/crypto/bcrypt"
 )
@@ -46,7 +45,7 @@ func Login(ctx *fiber.Ctx) error {
     })
   }
 
-  token, err := utils.GetToken(user.ID)
+  token, err := utils.GetToken(user.ID, user.Email)
   if err != nil {
     ctx.Status(fiber.StatusInternalServerError)
     return ctx.JSON(fiber.Map{
@@ -56,15 +55,7 @@ func Login(ctx *fiber.Ctx) error {
     })
   }
 
-  var responseUser types.UserDataStruct
-  responseUser = types.UserDataStruct{
-    Id:           user.ID,
-    FirstName:    user.FirstName,
-    LastName:     user.LastName,
-    FullName:     user.FirstName + " " + user.LastName,
-    EmailAddress: user.Email,
-    Token:        token,
-  }
+  responseUser := utils.GenerateUserStruct(user, token)
 
   return ctx.Status(200).JSON(fiber.Map{
     "user": responseUser,
