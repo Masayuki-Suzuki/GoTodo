@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link as ReachLink } from 'react-router-dom'
 import { useFormik } from 'formik'
 import { Box, Button, Link, Spinner, Text } from '@chakra-ui/react'
 import { CardTitle } from '../atoms/CardTitle'
 import CommonInputField from '../molecules/CommonInputField'
-import { signUpSchema } from '../../libs/validationSchema'
-import { getFetchStatus } from '../../reducks/fetchStatus/selectors'
+import { loginSchema } from '../../libs/validationSchema'
+import { getFetchStatus, getFetchError } from '../../reducks/fetchStatus/selectors'
+import { resetFetchError } from '../../reducks/fetchStatus/slices'
 import { login } from '../../reducks/users/operations'
 
 type InitialValues = {
@@ -16,6 +17,7 @@ type InitialValues = {
 
 const LogInCard = () => {
     const isLoading = useSelector(getFetchStatus)
+    const isFetchError = useSelector(getFetchError)
     const dispatch = useDispatch()
 
     const { errors, handleChange, handleSubmit, touched, values } = useFormik<InitialValues>({
@@ -23,15 +25,16 @@ const LogInCard = () => {
             emailAddress: '',
             password: ''
         },
-        validationSchema: signUpSchema,
+        validationSchema: loginSchema,
         async onSubmit(values) {
-            try {
-                await login(values)(dispatch)
-            } catch (e) {
-                console.error(e)
-            }
+            dispatch(resetFetchError())
+            await login(values)(dispatch)
         }
     })
+
+    useEffect(() => {
+        console.log(isFetchError)
+    }, [isFetchError])
 
     // ToDo: Need to fix email validation since it's for Sign Up!! (existence check runs)
 
@@ -61,6 +64,11 @@ const LogInCard = () => {
                     mt={4}
                     isRequired
                 />
+                {isFetchError ? (
+                    <Text fontSize={16} textAlign="center" textColor="red.500" fontWeight={700} mt={4}>
+                        {isFetchError}
+                    </Text>
+                ) : null}
                 <Box mt={6} textAlign="center">
                     {isLoading ? (
                         <Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="xl" />
