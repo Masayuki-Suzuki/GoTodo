@@ -40,7 +40,7 @@ const LogInCard = () => {
 
     return (
         <Box w={400} border="1px" borderColor="gray.100" boxShadow="sm" p="6" borderRadius={6}>
-            <CardTitle title="Sign Up" />
+            <CardTitle title="Log In" />
             <form onSubmit={handleSubmit}>
                 <CommonInputField
                     onInputAction={handleChange}

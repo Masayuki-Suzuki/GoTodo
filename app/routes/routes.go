@@ -19,6 +19,7 @@ func Setup(app *fiber.App) {
   // Post
   admin.Post("login", user.Login)
   admin.Post("register", user.Register)
+  admin.Post("verify-user", user.VerifyUser)
   admin.Post("email-existence", utils.ValidateEmailExistence)
 
   // Delete

@@ -29,3 +29,14 @@ export type ResponseUserData = {
         token: string
     }
 }
+
+export type VerifyUser = {
+    error: {
+        body: {
+            Inner: object
+            Errors: number
+        } | null
+        message: string
+    }
+    is_authorised: boolean
+}

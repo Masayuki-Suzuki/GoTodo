@@ -32,11 +32,7 @@ const SignUpCard = () => {
         },
         validationSchema: signUpSchema,
         async onSubmit(values) {
-            try {
-                await signUp(values)(dispatch)
-            } catch (e) {
-                console.error(e)
-            }
+            await signUp(values)(dispatch)
         }
     })
 
