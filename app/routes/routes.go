@@ -18,18 +18,23 @@ func Setup(app *fiber.App) {
   // -- Get
   admin.Get("me", user.GetUserData)
 
-  // Post
+  // -- Post
   admin.Post("login", user.Login)
   admin.Post("register", user.Register)
   admin.Post("verify-user", user.VerifyUser)
   admin.Post("email-existence", utils.ValidateEmailExistence)
 
-  // Delete
+  // -- Delete
   admin.Delete("user-delete", user.DeleteUser)
   admin.Delete("cleanup-all-user", user.CleanUpUserDatabase)
 
   // ====================
   // == ToDo End Point
+
+  // -- Get
+  todo.Get("view/:id", todos.GetToDo)
+
+  // -- Post
   todo.Post("create", todos.AddToDo)
 
   // ====================
