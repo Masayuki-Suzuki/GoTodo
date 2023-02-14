@@ -1,7 +1,6 @@
 package utils
 
 import (
-  "fmt"
   "github.com/gofiber/fiber/v2"
   "github.com/golang-jwt/jwt/v4"
   "github.com/joho/godotenv"
@@ -12,8 +11,6 @@ import (
 
 func GetToken(userID int, email string) (string, error) {
   env, err := godotenv.Read()
-
-  fmt.Println(strconv.Itoa(userID))
 
   payload := jwt.RegisteredClaims{
     Issuer:    email,

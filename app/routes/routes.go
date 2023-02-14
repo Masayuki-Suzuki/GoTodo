@@ -1,6 +1,7 @@
 package routes
 
 import (
+  "app/contorollers/todos"
   "app/contorollers/user"
   "app/contorollers/utils"
   "github.com/gofiber/fiber/v2"
@@ -9,12 +10,13 @@ import (
 func Setup(app *fiber.App) {
   api := app.Group("api")
   admin := api.Group("admin")
+  todo := api.Group("todo")
 
-  //---------------------------
-  // Admin End Point
+  // ====================
+  // == Admin End Point
 
-  // Get
-  //admin.Get("me")
+  // -- Get
+  admin.Get("me", user.GetUserData)
 
   // Post
   admin.Post("login", user.Login)
@@ -26,8 +28,14 @@ func Setup(app *fiber.App) {
   admin.Delete("user-delete", user.DeleteUser)
   admin.Delete("cleanup-all-user", user.CleanUpUserDatabase)
 
+  // ====================
+  // == ToDo End Point
+  todo.Post("create", todos.AddToDo)
+
+  // ====================
+  // == Index page
+
   // Get
-  // Index page
   app.Get("/", func(c *fiber.Ctx) error {
     return c.Render("index", fiber.Map{})
   })

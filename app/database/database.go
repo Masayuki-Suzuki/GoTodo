@@ -26,7 +26,7 @@ func Connect() {
   ctx := context.Background()
 
   // Run the auto migration tool.
-  if err := Client.Schema.Create(ctx, migrate.WithDropColumn(true)); err != nil {
+  if err := Client.Schema.Create(ctx, migrate.WithDropColumn(true), migrate.WithDropIndex(true)); err != nil {
     log.Fatalf("Failed creating schema resources: %v", err)
   }
 }

@@ -5,6 +5,7 @@ package ent
 import (
 	"app/ent/predicate"
 	"app/ent/todo"
+	"app/ent/user"
 	"context"
 	"errors"
 	"fmt"
@@ -63,9 +64,26 @@ func (tu *TodoUpdate) SetCreatedAt(s string) *TodoUpdate {
 	return tu
 }
 
+// SetUserID sets the "user" edge to the User entity by ID.
+func (tu *TodoUpdate) SetUserID(id int) *TodoUpdate {
+	tu.mutation.SetUserID(id)
+	return tu
+}
+
+// SetUser sets the "user" edge to the User entity.
+func (tu *TodoUpdate) SetUser(u *User) *TodoUpdate {
+	return tu.SetUserID(u.ID)
+}
+
 // Mutation returns the TodoMutation object of the builder.
 func (tu *TodoUpdate) Mutation() *TodoMutation {
 	return tu.mutation
+}
+
+// ClearUser clears the "user" edge to the User entity.
+func (tu *TodoUpdate) ClearUser() *TodoUpdate {
+	tu.mutation.ClearUser()
+	return tu
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -140,6 +158,9 @@ func (tu *TodoUpdate) check() error {
 			return &ValidationError{Name: "status", err: fmt.Errorf(`ent: validator failed for field "Todo.status": %w`, err)}
 		}
 	}
+	if _, ok := tu.mutation.UserID(); tu.mutation.UserCleared() && !ok {
+		return errors.New(`ent: clearing a required unique edge "Todo.user"`)
+	}
 	return nil
 }
 
@@ -178,6 +199,41 @@ func (tu *TodoUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := tu.mutation.CreatedAt(); ok {
 		_spec.SetField(todo.FieldCreatedAt, field.TypeString, value)
+	}
+	if tu.mutation.UserCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   todo.UserTable,
+			Columns: []string{todo.UserColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: user.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.UserIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   todo.UserTable,
+			Columns: []string{todo.UserColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: user.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, tu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -234,9 +290,26 @@ func (tuo *TodoUpdateOne) SetCreatedAt(s string) *TodoUpdateOne {
 	return tuo
 }
 
+// SetUserID sets the "user" edge to the User entity by ID.
+func (tuo *TodoUpdateOne) SetUserID(id int) *TodoUpdateOne {
+	tuo.mutation.SetUserID(id)
+	return tuo
+}
+
+// SetUser sets the "user" edge to the User entity.
+func (tuo *TodoUpdateOne) SetUser(u *User) *TodoUpdateOne {
+	return tuo.SetUserID(u.ID)
+}
+
 // Mutation returns the TodoMutation object of the builder.
 func (tuo *TodoUpdateOne) Mutation() *TodoMutation {
 	return tuo.mutation
+}
+
+// ClearUser clears the "user" edge to the User entity.
+func (tuo *TodoUpdateOne) ClearUser() *TodoUpdateOne {
+	tuo.mutation.ClearUser()
+	return tuo
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -324,6 +397,9 @@ func (tuo *TodoUpdateOne) check() error {
 			return &ValidationError{Name: "status", err: fmt.Errorf(`ent: validator failed for field "Todo.status": %w`, err)}
 		}
 	}
+	if _, ok := tuo.mutation.UserID(); tuo.mutation.UserCleared() && !ok {
+		return errors.New(`ent: clearing a required unique edge "Todo.user"`)
+	}
 	return nil
 }
 
@@ -379,6 +455,41 @@ func (tuo *TodoUpdateOne) sqlSave(ctx context.Context) (_node *Todo, err error) 
 	}
 	if value, ok := tuo.mutation.CreatedAt(); ok {
 		_spec.SetField(todo.FieldCreatedAt, field.TypeString, value)
+	}
+	if tuo.mutation.UserCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   todo.UserTable,
+			Columns: []string{todo.UserColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: user.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.UserIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   todo.UserTable,
+			Columns: []string{todo.UserColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: user.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &Todo{config: tuo.config}
 	_spec.Assign = _node.assignValues
