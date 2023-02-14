@@ -50,7 +50,9 @@ func GetUserData(ctx *fiber.Ctx) error {
     })
   }
 
+  responseUser := utils.GenerateUserStruct(user, jwtString)
+
   return ctx.JSON(fiber.Map{
-    "user": user,
+    "user": responseUser,
   })
 }
