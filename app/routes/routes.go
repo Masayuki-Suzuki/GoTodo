@@ -32,7 +32,8 @@ func Setup(app *fiber.App) {
   // == ToDo End Point
 
   // -- Get
-  todo.Get("view/:id", todos.GetToDo)
+  todo.Get("/", todos.GetToDo)
+  todo.Get("/all", todos.GetAllToDo)
 
   // -- Post
   todo.Post("create", todos.AddToDo)
