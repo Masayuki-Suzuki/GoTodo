@@ -14,25 +14,23 @@ const Auth = ({ children }: AuthPropsType) => {
     const checkAuth = async () => {
         const token = sessionStorage.getItem('token')
         if (!token) {
-            return false
-        }
-        try {
-            const { data } = await axios.post<VerifyUser>('http://localhost:4000/api/admin/verify-user', { token })
-            return data.is_authorised
-        } catch (e) {
-            console.error(e)
-            return false
+            navigate('/login')
+        } else {
+            try {
+                await axios.post<VerifyUser>('http://localhost:4000/api/admin/verify-user', {
+                    token
+                })
+            } catch (e) {
+                sessionStorage.removeItem('token')
+                navigate('/login')
+            }
         }
     }
 
     useEffect(() => {
         if (!isFetched.current) {
             isFetched.current = true
-            const isAuthorised = checkAuth()
-
-            if (!isAuthorised) {
-                navigate('/login')
-            }
+            void checkAuth()
         }
     }, [])
 

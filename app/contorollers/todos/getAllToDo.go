@@ -61,6 +61,8 @@ func GetAllToDo(ctx *fiber.Ctx) error {
     })
   }
 
+  // ToDo: May add the pagination.
+
   fmt.Println(todos)
   return ctx.JSON(fiber.Map{
     "todos": todos,

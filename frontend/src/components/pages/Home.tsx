@@ -1,18 +1,16 @@
 import React, { useEffect } from 'react'
 import { Flex, Heading } from '@chakra-ui/react'
-import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import Auth from '../atoms/Auth'
+import ActionButton from '../atoms/ActionButton'
+import { setOpenStatus } from '../../reducks/modals/slices'
+import AddToDoModal from '../organisms/AddToDoModal'
 
 const Home = () => {
-    const navigate = useNavigate()
-
-    useEffect(() => {
-        const token = sessionStorage.getItem('token')
-
-        if (!token) {
-            navigate('/login')
-        }
-    }, [])
+    const dispatch = useDispatch()
+    const action = () => {
+        dispatch(setOpenStatus({ isOpen: true }))
+    }
 
     return (
         <Auth>
@@ -20,6 +18,8 @@ const Home = () => {
                 <Heading as="h1" size="2xl">
                     Index Page.
                 </Heading>
+                <ActionButton action={action} />
+                <AddToDoModal />
             </Flex>
         </Auth>
     )

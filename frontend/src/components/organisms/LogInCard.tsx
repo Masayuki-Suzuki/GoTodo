@@ -32,12 +32,6 @@ const LogInCard = () => {
         }
     })
 
-    useEffect(() => {
-        console.log(isFetchError)
-    }, [isFetchError])
-
-    // ToDo: Need to fix email validation since it's for Sign Up!! (existence check runs)
-
     return (
         <Box w={400} border="1px" borderColor="gray.100" boxShadow="sm" p="6" borderRadius={6}>
             <CardTitle title="Log In" />
