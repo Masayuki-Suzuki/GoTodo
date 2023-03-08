@@ -1,17 +1,9 @@
 import React from 'react'
-import {
-    Button,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay
-} from '@chakra-ui/react'
+import { Modal, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getModalStatus } from '../../reducks/modals/selectors'
 import { setOpenStatus } from '../../reducks/modals/slices'
+import AddToDoForm from '../organisms/AddToDoForm'
 
 const AddToDoModal = () => {
     const isOpen = useSelector(getModalStatus)
@@ -21,20 +13,12 @@ const AddToDoModal = () => {
     }
 
     return (
-        <Modal isOpen={isOpen} onClose={onCloseHandler}>
+        <Modal isOpen={isOpen} onClose={onCloseHandler} size="xl" isCentered>
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader textAlign="center">Add New ToDo</ModalHeader>
                 <ModalCloseButton />
-                <ModalBody>モーダル！</ModalBody>
-                <ModalFooter>
-                    <Button mr={3} variant="ghost" onClick={onCloseHandler}>
-                        Cancel
-                    </Button>
-                    <Button colorScheme="blue" onClick={onCloseHandler}>
-                        Add
-                    </Button>
-                </ModalFooter>
+                <AddToDoForm />
             </ModalContent>
         </Modal>
     )

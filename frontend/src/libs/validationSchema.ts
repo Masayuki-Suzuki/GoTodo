@@ -32,3 +32,7 @@ export const loginSchema = Yup.object({
     emailAddress: Yup.string().email('Not a valid email address.').required('Email address is required.'),
     password: Yup.string().required('Password is required.')
 })
+
+export const addToDoSchema = Yup.object({
+    title: Yup.string().required('ToDo title is required.')
+})
