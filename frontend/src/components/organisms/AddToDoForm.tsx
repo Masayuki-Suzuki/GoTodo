@@ -34,6 +34,7 @@ const AddToDoForm = () => {
     })
 
     const onEditorChange = (value: string) => setFieldValue('description', value)
+    const onDatePickerChange = (value: string) => setFieldValue('dueDate', value)
 
     return (
         <>
