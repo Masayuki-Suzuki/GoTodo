@@ -4,7 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 const datePicker = () => {
     const [selectedDate, setSelectedDate] = useState('')
-    return ()
+    return null
 }
 
 export default datePicker
