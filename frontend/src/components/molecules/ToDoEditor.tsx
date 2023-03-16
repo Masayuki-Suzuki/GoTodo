@@ -13,7 +13,7 @@ const ToDoEditor = ({ value, onInputAction }: ToDoEditorProps) => {
     return (
         <Box className="addToDo--description" mt={4}>
             <FormLabel textTransform="capitalize" color="gray.600" fontWeight={600}>
-                Description:
+                Description
             </FormLabel>
             <ReactQuill theme="snow" value={value} onChange={onInputAction} />
         </Box>

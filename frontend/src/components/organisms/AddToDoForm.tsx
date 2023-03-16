@@ -2,16 +2,19 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useFormik } from 'formik'
 import { Box, Button, ModalBody, ModalFooter, Spinner, Text } from '@chakra-ui/react'
+import { format, parseISO } from 'date-fns'
 import { getFetchError, getFetchStatus } from '../../reducks/fetchStatus/selectors'
 import { addToDoSchema } from '../../libs/validationSchema'
 import { resetFetchError } from '../../reducks/fetchStatus/slices'
 import CommonInputField from '../molecules/CommonInputField'
 import ToDoEditor from '../molecules/ToDoEditor'
+import DatePicker from '../molecules/DatePicker'
+import { Nullable } from '../../types/utils'
 
 type InitialValues = {
     title: string
     description: string
-    dueDate: string
+    dueDate: Nullable<string>
 }
 
 const AddToDoForm = () => {
@@ -23,7 +26,7 @@ const AddToDoForm = () => {
         initialValues: {
             title: '',
             description: '',
-            dueDate: ''
+            dueDate: null
         },
         validationSchema: addToDoSchema,
         async onSubmit(values) {
@@ -34,7 +37,13 @@ const AddToDoForm = () => {
     })
 
     const onEditorChange = (value: string) => setFieldValue('description', value)
-    const onDatePickerChange = (value: string) => setFieldValue('dueDate', value)
+    const onDatePickerChange = (value: Nullable<Date>) => {
+        if (value) {
+            const isoDate = value.toISOString()
+            // const formattedDate = value ? format(ne, 'yyyy/MM/dd kk:mm') : value
+            setFieldValue('dueDate', isoDate)
+        }
+    }
 
     return (
         <>
@@ -52,6 +61,7 @@ const AddToDoForm = () => {
                         mt={0}
                     />
                     <ToDoEditor onInputAction={onEditorChange} value={values.description} />
+                    <DatePicker action={onDatePickerChange} value={values.dueDate} />
                     {isFetchError ? (
                         <Text fontSize={16} textAlign="center" textColor="red.500" fontWeight={700} mt={4}>
                             {isFetchError}

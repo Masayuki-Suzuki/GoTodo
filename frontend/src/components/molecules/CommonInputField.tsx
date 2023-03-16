@@ -28,7 +28,12 @@ const CommonInputField = ({
     return (
         <Box mt={mt}>
             <FormLabel textTransform="capitalize" color="gray.600" fontWeight={600}>
-                {label}:
+                {label}
+                {isRequired ? (
+                    <Text as="span" textColor="red.500">
+                        &nbsp;*
+                    </Text>
+                ) : null}
             </FormLabel>
             <Input
                 type={inputType}
