@@ -4,7 +4,6 @@ import (
   "app/contorollers/utils"
   "app/database"
   "app/ent/user"
-  "fmt"
   "github.com/gofiber/fiber/v2"
   "strconv"
 
@@ -12,20 +11,10 @@ import (
 )
 
 func GetAllToDo(ctx *fiber.Ctx) error {
-  var data map[string]string
+  headers := ctx.GetReqHeaders()
+  token := headers["Authorization"]
 
-  if err := ctx.BodyParser(&data); err != nil {
-    ctx.Status(fiber.StatusInternalServerError)
-    return ctx.JSON(fiber.Map{
-      "error": fiber.Map{
-        "message": "Request body parsing error.",
-        "body":    err,
-      },
-      "todos": nil,
-    })
-  }
-
-  if data["token"] == "" {
+  if token == "" {
     ctx.Status(fiber.StatusUnauthorized)
     return ctx.JSON(fiber.Map{
       "error": fiber.Map{
@@ -34,8 +23,7 @@ func GetAllToDo(ctx *fiber.Ctx) error {
     })
   }
 
-  jwtString := data["token"]
-  payload, err := utils.ValidateToken(ctx, jwtString)
+  payload, err := utils.ValidateToken(ctx, token)
 
   if err != nil {
     ctx.Status(fiber.StatusUnauthorized)
@@ -62,8 +50,6 @@ func GetAllToDo(ctx *fiber.Ctx) error {
   }
 
   // ToDo: May add the pagination.
-
-  fmt.Println(todos)
   return ctx.JSON(fiber.Map{
     "todos": todos,
   })

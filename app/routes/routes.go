@@ -36,7 +36,7 @@ func Setup(app *fiber.App) {
   todo.Get("/all", todos.GetAllToDo)
 
   // -- Post
-  todo.Post("create", todos.AddToDo)
+  todo.Post("/create", todos.AddToDo)
 
   // ====================
   // == Index page

@@ -2,7 +2,6 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useFormik } from 'formik'
 import { Box, Button, ModalBody, ModalFooter, Spinner, Text } from '@chakra-ui/react'
-import { format, parseISO } from 'date-fns'
 import { getFetchError, getFetchStatus } from '../../reducks/fetchStatus/selectors'
 import { addToDoSchema } from '../../libs/validationSchema'
 import { resetFetchError } from '../../reducks/fetchStatus/slices'
@@ -10,6 +9,7 @@ import CommonInputField from '../molecules/CommonInputField'
 import ToDoEditor from '../molecules/ToDoEditor'
 import DatePicker from '../molecules/DatePicker'
 import { Nullable } from '../../types/utils'
+import { addToDo } from '../../reducks/ToDos/operations'
 
 type InitialValues = {
     title: string
@@ -32,7 +32,7 @@ const AddToDoForm = () => {
         async onSubmit(values) {
             dispatch(resetFetchError())
             console.log(values)
-            // await login(values)(dispatch)
+            await addToDo(values)(dispatch)
         }
     })
 
@@ -40,7 +40,6 @@ const AddToDoForm = () => {
     const onDatePickerChange = (value: Nullable<Date>) => {
         if (value) {
             const isoDate = value.toISOString()
-            // const formattedDate = value ? format(ne, 'yyyy/MM/dd kk:mm') : value
             setFieldValue('dueDate', isoDate)
         }
     }

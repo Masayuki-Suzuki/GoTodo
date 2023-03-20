@@ -14,6 +14,9 @@ const initialState: RootState = {
     },
     modalState: {
         isOpen: false
+    },
+    todos: {
+        todos: []
     }
 }
 

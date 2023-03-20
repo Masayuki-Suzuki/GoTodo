@@ -1,8 +1,8 @@
-import axios, { AxiosError } from 'axios'
+import axios from 'axios'
 import { Action } from '@reduxjs/toolkit'
 import { Dispatch } from 'react'
-import { LogInField, ResponseUserData, SignUpField, User } from '../users/types'
 import { loadingStatusAction, setFetchError } from '../fetchStatus/slices'
+import { LogInField, ResponseUserData, SignUpField, User } from '../users/types'
 import { signInAction } from './slices'
 
 const setUpUserData = (dispatch: Dispatch<Action>, data: ResponseUserData) => {
@@ -23,7 +23,7 @@ export const signUp = (fieldData: SignUpField) => {
     return async (dispatch: Dispatch<Action>) => {
         try {
             dispatch(loadingStatusAction({ isLoading: true }))
-            const { data } = await axios.post<ResponseUserData>('http://localhost:4000/api/admin/register', fieldData)
+            const { data } = await axios.post<ResponseUserData>('/admin/register', fieldData)
             setUpUserData(dispatch, data)
         } catch (e) {
             if (axios.isAxiosError(e)) {
@@ -40,7 +40,7 @@ export const login = (fieldData: LogInField) => {
     return async (dispatch: Dispatch<Action>) => {
         try {
             dispatch(loadingStatusAction({ isLoading: true }))
-            const { data } = await axios.post('http://localhost:4000/api/admin/login', fieldData)
+            const { data } = await axios.post('/admin/login', fieldData)
             setUpUserData(dispatch, data)
         } catch (e) {
             if (axios.isAxiosError(e)) {

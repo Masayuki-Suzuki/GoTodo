@@ -30,14 +30,6 @@ func AddToDo(ctx *fiber.Ctx) error {
       },
       "todo": nil,
     })
-  } else if data["status"] == "" {
-    ctx.Status(fiber.StatusBadRequest)
-    return ctx.JSON(fiber.Map{
-      "error": fiber.Map{
-        "message": "Description is required.",
-      },
-      "todo": nil,
-    })
   }
 
   jwtString := data["token"]
@@ -62,7 +54,7 @@ func AddToDo(ctx *fiber.Ctx) error {
     SetTitle(data["title"]).
     SetDescription(data["description"]).
     SetStatus("ToDo").
-    SetDueDate(data["due_date"]).
+    SetDueDate(data["dueDate"]).
     SetCreatedAt(createdAt).
     SetCompletedAt("").
     SetUserID(userID).

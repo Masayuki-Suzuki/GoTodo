@@ -5,12 +5,17 @@ import Auth from '../atoms/Auth'
 import ActionButton from '../atoms/ActionButton'
 import { setOpenStatus } from '../../reducks/modals/slices'
 import AddToDoModal from '../organisms/AddToDoModal'
+import { getAllToDo } from '../../reducks/ToDos/operations'
 
 const Home = () => {
     const dispatch = useDispatch()
     const action = () => {
         dispatch(setOpenStatus({ isOpen: true }))
     }
+
+    useEffect(() => {
+        getAllToDo()(dispatch)
+    })
 
     return (
         <Auth>

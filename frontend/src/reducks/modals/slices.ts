@@ -2,7 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ModalState } from './types'
 
 const initialState: ModalState = {
-    isOpen: false
+    isOpen: false,
+    isOpenStatusModal: false
 }
 
 export const modalSlice = createSlice({

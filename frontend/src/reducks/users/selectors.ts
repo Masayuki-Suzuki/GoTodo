@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
-import { RootState } from '~/types/store'
+import { RootState } from '../../types/store'
 
 const userSelector = (state: RootState) => state.user
 

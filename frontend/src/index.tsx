@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
+import axios from 'axios'
 import { App } from './App'
 import reportWebVitals from './reportWebVitals'
 import * as serviceWorker from './serviceWorker'
@@ -12,6 +13,7 @@ if (!container) {
     throw new Error('Failed to find the root element')
 }
 const root = ReactDOM.createRoot(container)
+axios.defaults.baseURL = 'http://localhost:4000/api/'
 
 root.render(
     <React.StrictMode>
