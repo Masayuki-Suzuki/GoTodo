@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ToDos, ToDo } from './types'
+import { ToDos, ToDo, ToDoPayload } from './types'
 
 const initialState: ToDos = {
     todos: []
@@ -11,7 +11,8 @@ export const todoSlice = createSlice({
     reducers: {
         addToDo: (state: ToDos, action: PayloadAction<ToDo>) => {
             const updatedToDoAry = [...state.todos, action.payload]
-            return { todos: updatedToDoAry }
+            const updatedData: ToDos = { todos: updatedToDoAry }
+            return updatedData
         },
         updateAllToDo: (state: ToDos, action: PayloadAction<ToDos>) => {
             const updatedData = { ...state, ...action.payload }

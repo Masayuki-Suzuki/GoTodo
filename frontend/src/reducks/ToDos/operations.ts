@@ -15,9 +15,9 @@ export const addToDo = (fieldData: ToDoField) => {
                 token: sessionStorage.getItem('token')
             }
             const { data } = await axios.post('/todo/create', postData)
-            const todo: ToDo = data
+            const todo: ToDo = data.todo
+            console.log(data.todo)
             dispatch(addToDoToState(todo))
-            console.log(data)
             dispatch(loadingStatusAction({ isLoading: false }))
             dispatch(setOpenStatus({ isOpen: false }))
         } catch (e) {

@@ -14,6 +14,10 @@ export type ToDos = {
     todos: ToDo[]
 }
 
+export type ToDoPayload = {
+    todo: ToDo
+}
+
 export type ToDoField = {
     title: string
     description: string

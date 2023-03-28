@@ -14,8 +14,10 @@ const Home = () => {
     }
 
     useEffect(() => {
-        getAllToDo()(dispatch)
-    })
+        if (sessionStorage.getItem('token')) {
+            getAllToDo()(dispatch)
+        }
+    }, [])
 
     return (
         <Auth>

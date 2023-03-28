@@ -38,6 +38,9 @@ func Setup(app *fiber.App) {
   // -- Post
   todo.Post("/create", todos.AddToDo)
 
+  // -- Delete
+  todo.Delete("/delete-all", todos.DeleteAllToDo)
+
   // ====================
   // == Index page
 
